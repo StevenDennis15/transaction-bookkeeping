@@ -21,7 +21,7 @@ Error Code and Definition
 ------------
 available on folder app/lang in file en.json
 
-DOCUMENTATION FOR DETAIL FLOW / SCHENARIO
+DOCUMENTATION FOR DETAIL FLOW / SCENARIO
 ------------
 available on https://docs.google.com/document/d/1WsTnrpz6_3u0FVOO6HDxrSgldVc9THfFnOkJmr3x6o0/edit?usp=sharing
 

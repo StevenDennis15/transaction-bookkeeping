@@ -1,7 +1,5 @@
 "use strict"
 
-const { get } = require('request')
-
 let obj = (rootpath) => {
     const moment = require('moment')
     const validator = require('validator')

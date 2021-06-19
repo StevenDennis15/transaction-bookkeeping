@@ -42,7 +42,7 @@ let obj = (rootpath) => {
             }
 
             // filter 
-            let type = 'income'
+            let type = ''
             if(cst.trx_types.includes(req.query.type)){
                 type = req.query.type
             }
@@ -68,8 +68,14 @@ let obj = (rootpath) => {
             // removing last character in order by ','
             let new_order_by = order_by.slice(0, -1)
 
-            let where = ' AND (customer_id_from = $1 OR customer_id_to = $2) AND customer_transaction_type = $3 AND customer_transaction_amount >= $4 AND customer_transaction_amount <= $5'
-            let data = [customer_id, customer_id, type, amount_from, amount_to]
+            let where = ' AND (customer_id_from = $1 OR customer_id_to = $2) AND customer_transaction_amount >= $3 AND customer_transaction_amount <= $4'
+            let data = [customer_id, customer_id, amount_from, amount_to]
+
+            if(!validator.isEmpty(type)){
+                where += ' AND customer_transaction_type = $5'
+                data.push(type)
+            }
+
             let result = await req.model('transaction').getAllTransaction(where, data, new_order_by)
 
             res.success(result)
@@ -84,7 +90,7 @@ let obj = (rootpath) => {
             }
 
             // filter 
-            let type = 'income'
+            let type = ''
             if(cst.trx_types.includes(req.query.type)){
                 type = req.query.type
             }
@@ -109,9 +115,14 @@ let obj = (rootpath) => {
             }
             // removing last character in order by ','
             let new_order_by = order_by.slice(0, -1)
+            let where = ' AND (customer_id_from = $1 OR customer_id_to = $2) AND customer_transaction_amount >= $3 AND customer_transaction_amount <= $4'
+            let data = [customer_id, customer_id, amount_from, amount_to]
 
-            let where = ' AND (customer_id_from = $1 OR customer_id_to = $2) AND customer_transaction_type = $3 AND customer_transaction_amount >= $4 AND customer_transaction_amount <= $5'
-            let data = [customer_id, customer_id, type, amount_from, amount_to]
+            if(!validator.isEmpty(type)){
+                where += ' AND customer_transaction_type = $5'
+                data.push(type)
+            }
+            
             let page_no = req.query.page || 0
             let no_per_page = req.query.perpage || 0
             let result = await req.model('transaction').getPagingTransaction(

@@ -1,5 +1,7 @@
 "use strict"
 
+const { get } = require('request')
+
 let obj = (rootpath) => {
     const moment = require('moment')
     const validator = require('validator')
@@ -150,11 +152,11 @@ let obj = (rootpath) => {
             }            
             // validate type of transaction
             if(!cst.trx_types.includes(req.body.type)){
-                throw 'Type tidak sesuai'
+                throw getMessage('udt019')
             }
             // validate existing transaction type
             if(req.body.type == 'transfer' && req.body.type == 'topup'){
-                throw 'Transfer / topup gunakan endpoint lain'
+                throw getMessage('udt020')
             }
 
             let notes = (req.body.notes || '').trim()
@@ -207,26 +209,26 @@ let obj = (rootpath) => {
             // validate if transaction exists and transaction belongs to login customer
             let trx = await req.model('transaction').getTransaction(req.params.transaction_id)
             if(!trx){
-                throw 'transaction undefined'
+                throw getMessage('udt021')
             }
 
             if(trx.customer_id_from !== customer_id && trx.customer_id_to !== customer_id){
-                throw 'transaction doesnt exist'
+                throw getMessage('udt005')
             }
 
             // validate type of transaction
             if(!cst.trx_types.includes(req.body.type)){
-                throw 'Type tidak sesuai'
+                throw getMessage('019')
             }
 
             // validate existing transaction type
             if(trx.customer_transaction_type == 'transfer' && trx.customer_transaction_type == 'topup'){
-                throw 'Transfer / topup tidak dapat diedit/dihapus 1'
+                throw getMessage('udt022')
             }
 
             // validate type of transaction
             if(req.body.type == 'transfer' || req.body.type == 'topup'){
-                throw 'Transfer / topup tidak dapat diedit/dihapus'
+                throw getMessage('udt023')
             }
 
             let notes = (req.body.notes || '').trim()
@@ -270,22 +272,22 @@ let obj = (rootpath) => {
             }
             // validate if account belongs to loggedin customer
             if (account.customer_id != customer_id) {
-                throw getMessage('udt005')
+                throw getMessage('udt006')
             }
             
             // validate if transaction exists and transaction belongs to login customer
             let trx = await req.model('transaction').getTransaction(req.params.transaction_id)
             if(!trx){
-                throw 'transaction undefined'
+                throw getMessage('udt021')
             }
 
             if(trx.customer_id_from !== customer_id && trx.customer_id_to !== customer_id){
-                throw 'transaction doesnt exist'
+                throw getMessage('udt006')
             }
             
             // validate existing transaction type
             if(trx.customer_transaction_type == 'transfer' && trx.customer_transaction_type == 'topup'){
-                throw 'Transfer / topup tidak dapat diedit/dihapus 1'
+                throw getMessage('udt022')
             }
 
             let data = {

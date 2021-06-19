@@ -91,7 +91,12 @@
     {"udt015": "Your balance is not enough."},
     {"udt016": "Targeted account is required"},
     {"udt017": "Targeted account doesn't exists"},
-    {"udt018": "You are not allowed to see this data."}
-
+    {"udt018": "You are not allowed to see this data."},
+    {"udt019": "The type entered does not match"},
+    {"udt020": "This endpoint cannot be used for TRANSFER / TOPUP, please use another endpoint"},
+    {"udt021": "Transaction data not found"},
+    {"udt022": "TRANSFER / TOPUP data can't be changed / deleted"},
+    {"udt023": "can't convert data to TRANSFER / TOPUP"},
+    {"udt019": "The type entered does not match"}
     
 ]

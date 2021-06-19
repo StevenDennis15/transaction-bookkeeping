@@ -2,6 +2,7 @@
 CREATE TABLE IF NOT EXISTS customer (
   customer_id SERIAL,
   customer_name VARCHAR(200),
+  customer_username VARCHAR(100) UNIQUE,
   customer_password TEXT,
   customer_code VARCHAR(7),
   customer_email VARCHAR(100),

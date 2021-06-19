@@ -173,21 +173,15 @@ let obj = (rootpath) => {
 
     fn.login = async (req, res, next) => {
         try{
-            let phone = (req.body.phone || '').trim()
-            phone = loadLib('sanitize').phoneNumber(phone)
+            let username = (req.body.username || '').trim()
 
             // check customer is already logged in or not
             if(req.objCustomer != null) {
                 throw getMessage('auth012')
             }
 
-            // validate phone number
-            if(loadLib('validation').phoneNumber(phone) == false) {
-                throw getMessage('cst001')
-            }
-
             // get customer detail
-            let detailCustomer = await req.model('customer').getCustomerPhone(phone)
+            let detailCustomer = await req.model('customer').getCustomerUsername(username)
             // if customer not found, throw error
             if(isEmpty(detailCustomer)) {
                 // frontend must detect this error code and redirect to register page
@@ -266,6 +260,7 @@ let obj = (rootpath) => {
 
             // initialize variable
             let name = (req.body.name || '').trim()
+            let username = (req.body.username || '').trim()
             let email = (req.body.email || '').trim().toLowerCase()
             let phone = (req.body.phone || '').trim()            
             let id_number = (req.body.id_number || '').trim()    
@@ -302,6 +297,15 @@ let obj = (rootpath) => {
             if(isEmpty(dupeEmail) == false) {
                 throw getMessage('cst005')
             }
+            // validate empty username
+            if(validator.isEmpty(username)) {
+                throw getMessage('cst030')
+            }
+            // validate duplicate username
+            let dupeUsername = await req.model('customer').getCustomerUsername(username)
+            if(isEmpty(dupeUsername) == false) {
+                throw getMessage('cst029')
+            }
 
             // validate id number
             if(validator.isEmpty(id_number)) {
@@ -332,6 +336,7 @@ let obj = (rootpath) => {
 
                 let data = {
                     "name": name,
+                    "username": username,
                     "email": email,
                     "phone": phone,
                     "id_number": id_number,

@@ -63,6 +63,8 @@
     {"cst025": "Identity number/character must have 16 character."},
     {"cst026": "Identity number/character is not valid."},
     {"cst028": "Your age is still not enough or excessive."},
+    {"cst029": "Username is already registered."},
+    {"cst030": "Username is required."},
 
     {"req001": "The amount entered is less than 1 million or more than 10 million."},
     {"req002": "The amount entered is not a multiple of 1 million."},

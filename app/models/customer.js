@@ -32,6 +32,14 @@ let obj = (objDB, db, rootpath) => {
         return rows.rows[0]
     }
 
+    fn.getCustomerUsername = async (phone) => {
+        // prepare sql query
+        let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_username = $1 ORDER BY customer_id DESC LIMIT 1"
+
+        let rows = await db.query(sql, [phone])
+        return rows.rows[0]
+    }
+
     fn.getCustomerCode = async (code) => {
         // prepare sql query
         let sql = "SELECT * FROM " + tbl.customer + " WHERE customer_code = $1 LIMIT 1"
@@ -129,7 +137,7 @@ let obj = (objDB, db, rootpath) => {
         const now = moment().format('YYYY-MM-DD HH:mm:ss')
         const authModel = require('./auth.js')(objDB, db, rootpath)
         const ltModel = require('./lock_transaction.js')(objDB, db, rootpath)
-        const {name, email, phone, id_number, birthday, password, objToken} = data
+        const {name, username, email, phone, id_number, birthday, password, objToken} = data
         //BEGIN TRANSACTION
         await db.query('BEGIN')
         try{
@@ -138,6 +146,7 @@ let obj = (objDB, db, rootpath) => {
 
             let data = {
                 "customer_name": name,
+                "customer_username": username,
                 "customer_code": await fn.getUniqueCode(email),
                 "customer_email": email,
                 "customer_phone": phone,

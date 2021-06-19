@@ -112,6 +112,62 @@ let obj = (objDB, db, rootpath) => {
         }
     }
 
+    fn.createAccountTransaction = async (data) => {
+        let moment = require('moment')
+        const now = moment().format('YYYY-MM-DD HH:mm:ss')
+        const ltModel = require('./lock_transaction.js')(objDB, db, rootpath)
+        const trxModel = require('./transaction.js')(objDB, db, rootpath)
+        const {to, from, amount, type, notes} = data
+
+        //BEGIN TRANSACTION
+        await db.query('BEGIN')
+        try{
+            // insert lock_transaction data
+            await ltModel.insert(
+                'Insert new transaction, '+ type +' from customer_account_id: ' 
+                + to.customer_account_id + ', to customer_account_id: ' 
+                + from.customer_account_id + ', amount :' + amount
+            )
+
+            // insert customer transaction data
+            let trx_id = await trxModel.insertTransaction({
+                customer_id_to: to.customer_id,
+                customer_id_from: from.customer_id,
+                customer_transaction_amount: amount,
+                customer_transaction_type: type,
+                customer_transaction_notes: notes,
+                created_date: now
+            })
+
+            // update customer account balance // deduct balance sender
+            if(type == 'expense'){
+                await fn.updateAccount(from.customer_account_id, {
+                    customer_account_balance: from.customer_account_balance - amount,
+                    updated_date: now
+                })
+            }else{
+                await fn.updateAccount(from.customer_account_id, {
+                    customer_account_balance: from.customer_account_balance + amount,
+                    updated_date: now
+                })
+            }
+
+            //COMMIT
+            await db.query('COMMIT')
+
+            return {
+                status: true,
+                transaction_id: trx_id
+            }
+        }catch(e) {
+            //ROLLBACK
+            await db.query('ROLLBACK')
+            return {
+                status: false
+            }
+        }
+    }
+
     fn.updateAccountTransaction = async (data) => {
         let moment = require('moment')
         const now = moment().format('YYYY-MM-DD HH:mm:ss')
@@ -129,19 +185,37 @@ let obj = (objDB, db, rootpath) => {
                 + from.customer_account_id + ', amount :' + amount
             )
 
-            // update customer account balance // deduct balance
-            if(type == 'expense'){
-                await fn.updateAccount(from.customer_account_id, {
-                    customer_account_balance: from.customer_account_balance + trx.customer_transaction_amount - amount,
-                    updated_date: now
-                })
-
+            // validate old transaction type
+            if(trx.customer_transaction_type == 'expense'){
+                // depend on new transaction type
+                // update customer account balance // deduct balance
+                if(type == 'expense'){
+                    await fn.updateAccount(from.customer_account_id, {
+                        customer_account_balance: from.customer_account_balance + trx.customer_transaction_amount - amount,
+                        updated_date: now
+                    })
+                }else{
+                    // depend on new transaction type
+                    // update customer account balance // add balance
+                    await fn.updateAccount(from.customer_account_id, {
+                        customer_account_balance: from.customer_account_balance + trx.customer_transaction_amount + amount,
+                        updated_date: now
+                    })
+                }
             }else{
-                // update customer account balance // add balance
-                await fn.updateAccount(from.customer_account_id, {
-                    customer_account_balance: from.customer_account_balance - trx.customer_transaction_amount + amount,
-                    updated_date: now
-                })
+                // update customer account balance // deduct balance
+                if(type == 'expense'){
+                    await fn.updateAccount(from.customer_account_id, {
+                        customer_account_balance: from.customer_account_balance - trx.customer_transaction_amount - amount,
+                        updated_date: now
+                    })
+                }else{
+                    // update customer account balance // add balance
+                    await fn.updateAccount(from.customer_account_id, {
+                        customer_account_balance: from.customer_account_balance - trx.customer_transaction_amount + amount,
+                        updated_date: now
+                    })
+                }
             }
 
             // update customer transaction data

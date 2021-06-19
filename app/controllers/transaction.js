@@ -169,7 +169,7 @@ let obj = (rootpath) => {
                 notes: notes
             }
 
-            let is_transacted = await req.model('account').accountTransaction(data)
+            let is_transacted = await req.model('account').createAccountTransaction(data)
 
             if(is_transacted.status){
                 let result = await req.model('account').getAccount(account.customer_account_id)
@@ -218,7 +218,7 @@ let obj = (rootpath) => {
 
             // validate type of transaction
             if(!cst.trx_types.includes(req.body.type)){
-                throw getMessage('019')
+                throw getMessage('udt019')
             }
 
             // validate existing transaction type

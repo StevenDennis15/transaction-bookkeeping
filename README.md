@@ -7,7 +7,13 @@ Setup
 2. In this directory, run command: `docker-compose up` or `docker-compose up -d` to initiate Database
 3. Run command `npm install` to install depedencies
 4. Run command `npm start`
-5. Hit the requst on http://localhost:3000
+5. Import the POSTMAN folder to your POSTMAN application
+6. and read DOCUMENTATION FOR DETAIL FLOW / SCENARIO
+7. try the endpoint
+
+DOCUMENTATION FOR DETAIL FLOW / SCENARIO
+------------
+available on https://docs.google.com/document/d/1WsTnrpz6_3u0FVOO6HDxrSgldVc9THfFnOkJmr3x6o0/edit?usp=sharing
 
 POSTMAN Collection and Environment
 ------------
@@ -20,10 +26,6 @@ containing information of application
 Error Code and Definition
 ------------
 available on folder app/lang in file en.json
-
-DOCUMENTATION FOR DETAIL FLOW / SCENARIO
-------------
-available on https://docs.google.com/document/d/1WsTnrpz6_3u0FVOO6HDxrSgldVc9THfFnOkJmr3x6o0/edit?usp=sharing
 
 TESTING
 -----------

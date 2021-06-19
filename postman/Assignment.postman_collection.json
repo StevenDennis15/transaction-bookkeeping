@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6937c35e-5f32-43d1-ae54-72e5f6b69dd6",
+		"_postman_id": "64bf7158-abd5-43ae-8b9c-4f957c0b9a9f",
 		"name": "Assignment",
 		"description": "Request & Response Assignment API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
@@ -380,7 +380,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"phone\": \"08178881682\",\n\t\"password\": \"123123123\"\n}"
+							"raw": "{\n\t\"username\": \"fadelmajid1\",\n\t\"password\": \"123123123\"\n}"
 						},
 						"url": {
 							"raw": "{{proto}}://{{domain-url}}/auth/login",
@@ -517,7 +517,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"phone\": \"08178881682\",\n\t\"name\": \"Fadel Majid 2\",\n\t\"email\": \"fadelmajid2@gmail.com\",\n\t\"password\": \"123123123\",\n    \"id_number\": \"3212312312321312\",\n    \"birthday\": \"1996-12-02\"\n}"
+							"raw": "{\n\t\"phone\": \"08178881681\",\n    \"username\": \"fadelmajid1\",\n\t\"name\": \"Fadel Majid 2\",\n\t\"email\": \"fadelmajid2@gmail.com\",\n\t\"password\": \"123123123\",\n    \"id_number\": \"3212312312321312\",\n    \"birthday\": \"1996-12-02\"\n}"
 						},
 						"url": {
 							"raw": "{{proto}}://{{domain-url}}/auth/register",
@@ -1212,7 +1212,7 @@
 									"variable": [
 										{
 											"key": "account_number",
-											"value": "22222"
+											"value": "22223"
 										}
 									]
 								}
@@ -1298,7 +1298,7 @@
 								],
 								"body": {
 									"mode": "raw",
-									"raw": "{\n    \"to_account_number\": \"11111\",\n    \"amount\": 12123\n}"
+									"raw": "{\n    \"to_account_number\": \"22222\",\n    \"amount\": 12123\n}"
 								},
 								"url": {
 									"raw": "{{proto}}://{{domain-url}}/account/:from/transfer",
@@ -1314,7 +1314,7 @@
 									"variable": [
 										{
 											"key": "from",
-											"value": "22222"
+											"value": "22223"
 										}
 									]
 								}
@@ -1324,8 +1324,156 @@
 					]
 				},
 				{
-					"name": "transaction report",
+					"name": "transaction",
 					"item": [
+						{
+							"name": "create transaction",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									},
+									{
+										"key": "app-version",
+										"value": "{{app-version}}",
+										"type": "text"
+									},
+									{
+										"key": "platform",
+										"value": "{{platform}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account_number\": \"22223\",\n    \"amount\": 200,\n    \"type\": \"income\",\n    \"notes\": \"proyek\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{proto}}://{{domain-url}}/transaction",
+									"protocol": "{{proto}}",
+									"host": [
+										"{{domain-url}}"
+									],
+									"path": [
+										"transaction"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update transaction",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									},
+									{
+										"key": "app-version",
+										"value": "{{app-version}}",
+										"type": "text"
+									},
+									{
+										"key": "platform",
+										"value": "{{platform}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account_number\": \"22223\",\n    \"amount\": 200,\n    \"type\": \"expense\",\n    \"notes\": \"proyek\"\n}"
+								},
+								"url": {
+									"raw": "{{proto}}://{{domain-url}}/transaction/:transaction_id",
+									"protocol": "{{proto}}",
+									"host": [
+										"{{domain-url}}"
+									],
+									"path": [
+										"transaction",
+										":transaction_id"
+									],
+									"variable": [
+										{
+											"key": "transaction_id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete transaction",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "access-token",
+										"value": "{{access-token}}",
+										"type": "text"
+									},
+									{
+										"key": "app-version",
+										"value": "{{app-version}}",
+										"type": "text"
+									},
+									{
+										"key": "platform",
+										"value": "{{platform}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"account_number\": \"22223\"\n}"
+								},
+								"url": {
+									"raw": "{{proto}}://{{domain-url}}/transaction/:transaction_id",
+									"protocol": "{{proto}}",
+									"host": [
+										"{{domain-url}}"
+									],
+									"path": [
+										"transaction",
+										":transaction_id"
+									],
+									"variable": [
+										{
+											"key": "transaction_id",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						},
 						{
 							"name": "get pagination transaction",
 							"request": {
@@ -1402,7 +1550,7 @@
 									}
 								],
 								"url": {
-									"raw": "{{proto}}://{{domain-url}}/transaction/all",
+									"raw": "{{proto}}://{{domain-url}}/transaction/all?type=",
 									"protocol": "{{proto}}",
 									"host": [
 										"{{domain-url}}"
@@ -1410,6 +1558,12 @@
 									"path": [
 										"transaction",
 										"all"
+									],
+									"query": [
+										{
+											"key": "type",
+											"value": ""
+										}
 									]
 								}
 							},
@@ -1454,12 +1608,32 @@
 									"variable": [
 										{
 											"key": "transaction_id",
-											"value": "16"
+											"value": "2"
 										}
 									]
 								}
 							},
 							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
 						}
 					]
 				}
